@@ -24,8 +24,9 @@ module.exports.decrypt = (keyPair, message) => {
     return decrypted
 }
 
-
-
+function changeText() {
+    console.log("ayyyy")
+}
 
 
 // let keyPair = createKeys()
