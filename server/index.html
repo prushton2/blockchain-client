@@ -29,11 +29,19 @@
 
                 <td>
                     Encrypt:<br>
-                    <input id="messageToEncrypt"> <button>Encrypt</button>
+                    <input id="messageToEncrypt"> <button onclick="crypt('Encrypt')">Encrypt</button><br>
                 </td>
                 <td>
+                    <label id="EncryptResponse"></label>
+                </td>
+            </tr>
+            <tr></tr>
+                <td>
                     Decrypt:<br>
-                    <input id="messageToDecrypt"> <button>Decrypt</button>
+                    <input id="messageToDecrypt"> <button onclick="crypt('Decrypt')">Decrypt</button><br>
+                </td>
+                <td>
+                    <label id="DecryptResponse"></label>
                 </td>
             </tr>
         </table>
@@ -42,6 +50,13 @@
 
 
         <script>
+
+            const crypt = async(d_or_e) => {
+                message = document.getElementById(`messageTo${d_or_e}`).value
+                console.log(message)
+                response = await sendCommand(`${d_or_e}/${message}`)
+                document.getElementById(`${d_or_e}Response`).innerHTML = response
+            }
 
             const setActiveUser = async() => {
                 name = document.getElementById("activeUser").value

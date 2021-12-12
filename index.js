@@ -29,11 +29,31 @@ app.use(cors({
     origin: `http://localhost:${outPort}`
 }));
 
-app.get('/', function (req, res) {
+app.get('/', (req, res) => {
     res.send('Hello World');
 })
 
-app.get("/setActiveUser/*", async(req, res) => {
+app.get("/Encrypt/*", (req, res) => {
+    message = req.url.split("/")[2]
+    fs.readFile(`keyPairs/${activeUser}/publicKey.pem`, "utf8", (err, f) => {
+        console.log(message)
+        f = f.toString()
+        encrypted = encryption.encrypt(f, message)
+        res.end(encrypted)
+    })
+})
+
+app.get("/Decrypt/*", (req, res) => {
+    message = req.url.split("/").slice(2).join("/")
+    fs.readFile(`keyPairs/${activeUser}/privateKey.pem`, "utf8", (err, f) => { //No file available kills program, need to fix
+        f = f.toString()
+        decrypted = encryption.decrypt(f, message)
+        decrypted = encryption.convertUrlEscapeCharacters(decrypted)
+        res.end(decrypted)
+    })
+})
+
+app.get("/setActiveUser/*", (req, res) => {
     keyPair = req.url.split("/")[2]
     console.log(keyPair)
     if(fs.existsSync(`keyPairs/${keyPair}/publicKey.pem`) && fs.existsSync(`keyPairs/${keyPair}/privateKey.pem`)) {
