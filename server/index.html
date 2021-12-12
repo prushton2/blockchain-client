@@ -7,7 +7,7 @@
         <label>Hello World</label>
 
         
-        <button onClick="sendToServer('ayyy')">0</button>
+        <button onClick="printResponse('')">0</button>
 
 
 
@@ -16,7 +16,7 @@
                 console.log(await sendToServer(text))
             }
             const sendToServer = async(text) => {
-                return await fetch(`http://localho.st:5000/${text}`)
+                return await fetch(`http://localhost:5000/${text}`).then((response) => {return response.text()})
             }
         </script>
     </body>

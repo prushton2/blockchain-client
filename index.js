@@ -1,8 +1,16 @@
 const encryption = require("./encryption")
-var http = require('http');
-var fs = require('fs');
+const http = require('http');
+const fs = require('fs');
 
-const PORT=8080; 
+const cors = require("cors")
+const express = require('express');
+const app = express();
+
+const outPort=8080; 
+const inPort =5000;
+
+
+
 
 fs.readFile('./server/index.html', function (err, html) {
 
@@ -12,14 +20,19 @@ fs.readFile('./server/index.html', function (err, html) {
         response.writeHeader(200, {"Content-Type": "text/html"});  
         response.write(html);  
         response.end();  
-    }).listen(PORT);
+    }).listen(outPort);
 });
 
-const requestListener = async(req, res) => {
-    console.log("ayyy")
-    res.end("ayyy")
-}
 
+app.use(cors({
+    origin: `http://localhost:${outPort}`
+}));
 
-const server = http.createServer(requestListener);
-server.listen(5000);
+app.get('/*', function (req, res) {
+    res.send('Hello World2');
+})
+
+var server = app.listen(inPort, function () {
+    var host = server.address().address
+    var port = server.address().port
+})
