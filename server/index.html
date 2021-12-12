@@ -4,20 +4,51 @@
 
     </head>
     <body>
-        <label>Hello World</label>
+        <h1>Blockchain</h1>
 
-        
-        <button onClick="printResponse('')">0</button>
+        <table>
+            <tr>
+                <td>
+                    Active User Name: <br>
+                    <input id="aciveUser"> <button>Set</button>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Create User:<br>
+                    <input id="newUserName"> <button>Create User</button>
+                </td>
+            </tr>
+            <tr>
+
+                <td>
+                    Encrypt:<br>
+                    <input id="messageToEncrypt"> <button>Encrypt</button>
+                </td>
+                <td>
+                    Decrypt:<br>
+                    <input id="messageToDecrypt"> <button>Decrypt</button>
+                </td>
+            </tr>
+        </table>
+
 
 
 
         <script>
-            const printResponse = async(text) => {
-                console.log(await sendToServer(text))
-            }
-            const sendToServer = async(text) => {
+
+
+
+            const sendCommand = async(text) => {
                 return await fetch(`http://localhost:5000/${text}`).then((response) => {return response.text()})
             }
         </script>
+        <style type="text/css" media="screen">
+
+            h1 {
+                size: 200%;
+            }
+                
+        </style>
     </body>
 </html>
