@@ -7,13 +7,16 @@
         <label>Hello World</label>
 
         
-        <button onClick="changeText()">0</button>
+        <button onClick="sendToServer('ayyy')">0</button>
 
 
 
         <script>
-            function changeText() {
-                console.log("ayyyyy")
+            const printResponse = async(text) => {
+                console.log(await sendToServer(text))
+            }
+            const sendToServer = async(text) => {
+                return await fetch(`http://localho.st:5000/${text}`)
             }
         </script>
     </body>

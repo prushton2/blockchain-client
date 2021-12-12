@@ -14,3 +14,12 @@ fs.readFile('./server/index.html', function (err, html) {
         response.end();  
     }).listen(PORT);
 });
+
+const requestListener = async(req, res) => {
+    console.log("ayyy")
+    res.end("ayyy")
+}
+
+
+const server = http.createServer(requestListener);
+server.listen(5000);
