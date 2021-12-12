@@ -1,4 +1,3 @@
-
 let crypto = require("crypto"),
  keypair = require("keypair");
 
@@ -58,28 +57,3 @@ module.exports.convertUrlEscapeCharacters = (string) => {
     })
     return string
 }
-
-function changeText() {
-    console.log("ayyyy")
-}
-
-
-// let keyPair = createKeys()
-
-// let encrypted = encrypt(keyPair, "this is a string")
-
-// let decrypted = decrypt(keyPair, encrypted)
-
-// console.log(keyPair["public"])
-// console.log("--------------")
-// console.log(keyPair["private"])
-// console.log("--------------")
-// console.log(encrypted)
-// console.log("--------------")
-// console.log(decrypted)
-
-
-
-
-// for unit testing purposes
-// module.exports = { demonstrateKeyBasedAsymmetricEncryption, logger };
