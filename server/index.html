@@ -10,13 +10,19 @@
             <tr>
                 <td>
                     Active User Name: <br>
-                    <input id="aciveUser"> <button>Set</button>
+                    <input id="activeUser"> <button onClick="setActiveUser()">Set</button>
+                </td>
+                <td>
+                    <label id="ActiveUserResponse"></label>
                 </td>
             </tr>
             <tr>
                 <td>
                     Create User:<br>
                     <input id="newUserName"> <button>Create User</button>
+                </td>
+                <td>
+                    <label id="NewUserResponse"></label>
                 </td>
             </tr>
             <tr>
@@ -37,16 +43,34 @@
 
         <script>
 
-
+            const setActiveUser = async() => {
+                name = document.getElementById("activeUser").value
+                response = await sendCommand(`setActiveUser/${name}`)
+                document.getElementById("ActiveUserResponse").innerHTML = response 
+            }
 
             const sendCommand = async(text) => {
                 return await fetch(`http://localhost:5000/${text}`).then((response) => {return response.text()})
             }
         </script>
         <style type="text/css" media="screen">
-
+            body {
+                color: #D4D4D4;
+                background-color: #1e1e1e;
+            }
             h1 {
                 size: 200%;
+            }
+            input {
+                color: #D4D4D4;
+                background-color: #2f2f2f;
+            }
+            button {
+                color: #D4D4D4;
+                background-color: #2f2f2f;
+            }
+            label {
+                color: #D4D4D4;
             }
                 
         </style>
