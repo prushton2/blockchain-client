@@ -14,12 +14,6 @@ const baseURL     = "blockchain.prushton.repl.co"
 
 
 let activeUser;
-const go = async() => {
-    console.log(await requests.get("https://blockchain.prushton.repl.co"))
-
-}
-
-go()
 
 fs.readFile('./server/index.html', function (err, html) {
 
