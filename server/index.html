@@ -35,7 +35,8 @@
 
             const newUser = async() => {
                 userName = document.getElementById(`newUserName`).value
-                document.getElementById("NewUserResponse").value = await sendCommand(`NewUser/${userName}`)
+                document.getElementById("NewUserResponse").innerHTML = "Creating User..."
+                document.getElementById("NewUserResponse").innerHTML = await sendCommand(`NewUser/${userName}`)
             }
 
             const crypt = async(d_or_e) => {

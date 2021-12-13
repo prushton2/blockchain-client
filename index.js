@@ -31,15 +31,17 @@ app.use(cors({
     origin: `http://localhost:${outPort}`
 }));
 
-app.get('/', (req, res) => {
-    res.send('Hello World');
-})
-
 app.get("/NewUser/*", async(req, res) => {
+    console.log("received")
+
+
+    keyPair = encryption.createKeys()
+
+    console.log("Created key pair")
+
     userName = req.url.split("/")[2]
-    response = await requests.get(`${baseURL}/newUser/${userName}`)
-    console.log(response)
-    res.end(response)
+    response = await requests.post(`${baseURL}/newUser/${userName}`, keyPair["public"])
+    res.end("__")
 })
 
 app.get("/Encrypt/*", (req, res) => {
