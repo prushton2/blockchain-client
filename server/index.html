@@ -19,7 +19,7 @@
             <tr>
                 <td>
                     Create User:<br>
-                    <input id="newUserName"> <button>Create User</button>
+                    <input id="newUserName"> <button onclick="newUser()">Create User</button>
                 </td>
                 <td>
                     <label id="NewUserResponse"></label>
@@ -50,6 +50,11 @@
 
 
         <script>
+
+            const newUser = async() => {
+                userName = document.getElementById(`newUserName`).value
+                document.getElementById("NewUserResponse").value = await sendCommand(`NewUser/${userName}`)
+            }
 
             const crypt = async(d_or_e) => {
                 message = document.getElementById(`messageTo${d_or_e}`).value

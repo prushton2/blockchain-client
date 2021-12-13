@@ -1,17 +1,25 @@
-const encryption = require("./encryption")
-const http = require('http');
-const fs = require('fs');
+const encryption  = require("./encryption");
+const http        = require("http");
+const fs          = require("fs");
+const requests    = require("./requests");
 
-const cors = require("cors")
-const express = require('express');
-const res = require("express/lib/response");
-const app = express();
+const cors        = require("cors")
+const express     = require("express");
+const res         = require("express/lib/response");
+const app         = express();
 
-const outPort=8080; 
-const inPort =5000;
+const outPort     = 8080; 
+const inPort      = 5000;
+const baseURL     = "blockchain.prushton.repl.co"
+
 
 let activeUser;
+const go = async() => {
+    console.log(await requests.get("https://blockchain.prushton.repl.co", "db", ""))
 
+}
+
+go()
 
 fs.readFile('./server/index.html', function (err, html) {
 
@@ -31,6 +39,13 @@ app.use(cors({
 
 app.get('/', (req, res) => {
     res.send('Hello World');
+})
+
+app.get("/NewUser/*", async(req, res) => {
+    userName = req.url.split("/")[2]
+    response = await fetch(`${baseURL}/newUser/${userName}`).then((value) => {return value.text()})
+    console.log(response)
+    res.end(response)
 })
 
 app.get("/Encrypt/*", (req, res) => {
@@ -66,6 +81,8 @@ app.get("/setActiveUser/*", (req, res) => {
     }
 
 })
+
+
 
 var server = app.listen(inPort, function () {
     var host = server.address().address
