@@ -15,7 +15,7 @@ const baseURL     = "blockchain.prushton.repl.co"
 
 let activeUser;
 const go = async() => {
-    console.log(await requests.get("https://blockchain.prushton.repl.co", "db", ""))
+    console.log(await requests.get("https://blockchain.prushton.repl.co"))
 
 }
 
@@ -51,7 +51,6 @@ app.get("/NewUser/*", async(req, res) => {
 app.get("/Encrypt/*", (req, res) => {
     message = req.url.split("/")[2]
     fs.readFile(`keyPairs/${activeUser}/publicKey.pem`, "utf8", (err, f) => {
-        console.log(message)
         f = f.toString()
         encrypted = encryption.encrypt(f, message)
         res.end(encrypted)
@@ -70,7 +69,6 @@ app.get("/Decrypt/*", (req, res) => {
 
 app.get("/setActiveUser/*", (req, res) => {
     keyPair = req.url.split("/")[2]
-    console.log(keyPair)
     if(fs.existsSync(`keyPairs/${keyPair}/publicKey.pem`) && fs.existsSync(`keyPairs/${keyPair}/privateKey.pem`)) {
         res.end(`Opened key pair: ${keyPair}`)
         activeUser = keyPair
