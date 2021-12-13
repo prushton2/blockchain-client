@@ -10,7 +10,7 @@ const app         = express();
 
 const outPort     = 8080; 
 const inPort      = 5000;
-const baseURL     = "blockchain.prushton.repl.co"
+const baseURL     = "https://blockchain.prushton.repl.co"
 
 
 let activeUser;
@@ -37,7 +37,7 @@ app.get('/', (req, res) => {
 
 app.get("/NewUser/*", async(req, res) => {
     userName = req.url.split("/")[2]
-    response = await fetch(`${baseURL}/newUser/${userName}`).then((value) => {return value.text()})
+    response = await requests.get(`${baseURL}/newUser/${userName}`)
     console.log(response)
     res.end(response)
 })
