@@ -6,45 +6,27 @@
     <body>
         <h1>Blockchain</h1>
 
-        <table>
-            <tr>
-                <td>
-                    Active User Name: <br>
-                    <input id="activeUser"> <button onClick="setActiveUser()">Set</button>
-                </td>
-                <td>
-                    <label id="ActiveUserResponse"></label>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    Create User:<br>
-                    <input id="newUserName"> <button onclick="newUser()">Create User</button>
-                </td>
-                <td>
-                    <label id="NewUserResponse"></label>
-                </td>
-            </tr>
-            <tr>
 
-                <td>
-                    Encrypt:<br>
-                    <input id="messageToEncrypt"> <button onclick="crypt('Encrypt')">Encrypt</button><br>
-                </td>
-                <td>
-                    <label id="EncryptResponse"></label>
-                </td>
-            </tr>
-            <tr></tr>
-                <td>
-                    Decrypt:<br>
-                    <input id="messageToDecrypt"> <button onclick="crypt('Decrypt')">Decrypt</button><br>
-                </td>
-                <td>
-                    <label id="DecryptResponse"></label>
-                </td>
-            </tr>
-        </table>
+        Active User Name: <br>
+        <input id="activeUser"> <button onClick="setActiveUser()">Set</button><br>
+
+        <label id="ActiveUserResponse"></label><br><br>
+
+        Create User:<br>
+        <input id="newUserName"> <button onclick="newUser()">Create User</button><br>
+
+        <label id="NewUserResponse"></label><br><br>
+
+        Encrypt:<br>
+        <input id="messageToEncrypt"> <button onclick="crypt('Encrypt')">Encrypt</button><br>
+
+        <label id="EncryptResponse"></label><br><br>
+
+        Decrypt:<br>
+        <input id="messageToDecrypt"> <button onclick="crypt('Decrypt')">Decrypt</button><br>
+
+        <label id="DecryptResponse"></label><br><br>
+
 
 
 
@@ -58,7 +40,6 @@
 
             const crypt = async(d_or_e) => {
                 message = document.getElementById(`messageTo${d_or_e}`).value
-                console.log(message)
                 response = await sendCommand(`${d_or_e}/${message}`)
                 document.getElementById(`${d_or_e}Response`).innerHTML = response
             }
