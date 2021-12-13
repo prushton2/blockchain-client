@@ -40,8 +40,8 @@ app.get("/NewUser/*", async(req, res) => {
     console.log("Created key pair")
 
     userName = req.url.split("/")[2]
-    response = await requests.post(`${baseURL}/newUser/${userName}`, keyPair["public"])
-    res.end("__")
+    response = await requests.get(`${baseURL}/newUser/${userName}/${keyPair["public"]}`)
+    res.end(response)
 })
 
 app.get("/Encrypt/*", (req, res) => {
