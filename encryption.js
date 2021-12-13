@@ -2,7 +2,7 @@ let crypto = require("crypto"),
  keypair = require("keypair");
 
 
-const createKeys = () => {
+module.exports.createKeys = () => {
     pair = keypair(3072);
     return pair
 }
