@@ -51,28 +51,34 @@ app.get("/NewUser/*", async(req, res) => {
     res.end(response)
 })
 
-app.get("/Encrypt/*", (req, res) => {
+app.get("/Encrypt/*", async(req, res) => {
     message = req.url.split("/")[2]
-    fs.readFile(`keyPairs/${activeUser}/publicKey.pem`, "utf8", (err, f) => {
-        f = f.toString()
-        encrypted = encryption.encrypt(f, message)
-        res.end(encrypted)
-    })
+
+    f = await km.getPublicKey(activeUser)
+    console.log(f)
+    encrypted = encryption.encrypt(f, message)
+    res.end(encrypted)
 })
 
-app.get("/Decrypt/*", (req, res) => {
+app.get("/Decrypt/*", async(req, res) => {
     message = req.url.split("/").slice(2).join("/")
-    fs.readFile(`keyPairs/${activeUser}/privateKey.pem`, "utf8", (err, f) => { //No file available kills program, need to fix
-        f = f.toString()
+    
+    f = await km.getPrivateKey(activeUser)
+    try {
+
         decrypted = encryption.decrypt(f, message)
         decrypted = encryption.convertUrlEscapeCharacters(decrypted)
         res.end(decrypted)
-    })
+    } catch (e) {
+        res.end("An Unexpected Error Occurred")
+    }
+    
+    
 })
 
 app.get("/setActiveUser/*", (req, res) => {
     keyPair = req.url.split("/")[2]
-    if(fs.existsSync(`keyPairs/${keyPair}/publicKey.pem`) && fs.existsSync(`keyPairs/${keyPair}/privateKey.pem`)) {
+    if(km.isUser(keyPair)) {
         res.end(`Opened key pair: ${keyPair}`)
         activeUser = keyPair
     } 

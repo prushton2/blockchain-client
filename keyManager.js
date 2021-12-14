@@ -1,5 +1,5 @@
 const fs = require("fs");
-const keyPairPath = "./keyPairs"
+const keyPairPath = "keyPairs"
 
 module.exports.saveKeys = async(userName, publicKey, privateKey) => {
     res = await mkdir(`${keyPairPath}/${userName}`)
@@ -10,6 +10,17 @@ module.exports.saveKeys = async(userName, publicKey, privateKey) => {
     console.log(res)
 }
 
+module.exports.getPublicKey = async(userName) => {
+    return await get(`${keyPairPath}/${userName}/publicKey.pem`)
+}
+
+module.exports.getPrivateKey = async(userName) => {
+    return await get(`${keyPairPath}/${userName}/privateKey.pem`)
+}
+
+module.exports.isUser = (userName) => {
+    return fs.existsSync(`${keyPairPath}/${userName}/privateKey.pem`) && fs.existsSync(`${keyPairPath}/${userName}/publicKey.pem`)
+}
 
 async function mkdir(path) {
     return new Promise((resolve, reject) => {
@@ -32,7 +43,18 @@ async function write(path, content) {
             } else {
                 resolve(`File ${path} Created and Written`)
             }
-            //file written successfully
           })
+    })
+}
+
+async function get(path) {
+    return new Promise((resolve, reject) => {
+        fs.readFile(path, "utf8", (err, f) => {
+            if(err) {
+                reject(err)
+            } else {
+                resolve(f.toString())
+            }
+        })
     })
 }
