@@ -2,6 +2,7 @@ const encryption  = require("./encryption");
 const http        = require("http");
 const fs          = require("fs");
 const requests    = require("./requests");
+const km          = require("./keyManager");
 
 const cors        = require("cors")
 const express     = require("express");
@@ -40,7 +41,13 @@ app.get("/NewUser/*", async(req, res) => {
     console.log("Created key pair")
 
     userName = req.url.split("/")[2]
+    
     response = await requests.get(`${baseURL}/newUser/${userName}/${keyPair["public"]}`)
+    
+    if(response == "Created User") {
+        km.saveKeys(userName, keyPair["public"], keyPair["private"])
+    }
+    
     res.end(response)
 })
 
