@@ -7,15 +7,33 @@
         <h1>Blockchain</h1>
 
 
-        Active User Name: <br>
-        <input id="activeUser"> <button onClick="setActiveUser()">Set</button><br>
+        <table>
+            <tr>
+                <td>
 
-        <label id="ActiveUserResponse"></label><br><br>
-
-        Create User:<br>
-        <input id="newUserName"> <button onclick="newUser()">Create User</button><br>
-
-        <label id="NewUserResponse"></label><br><br>
+                    Active User Name: <br>
+                    <input id="activeUser"> <button onClick="setActiveUser()">Set</button><br>
+                    
+                    <label id="ActiveUserResponse"></label><br><br>
+                </td>
+                <td>
+                    Create User:<br>
+                    <input id="newUserName"> <button onclick="newUser()">Create User</button><br>
+            
+                    <label id="NewUserResponse"></label><br><br>
+                </td>    
+            </tr>
+            <tr>
+                <td>
+                    Create a new Block:<br>
+                    <input id="BlockchainInfo" placeholder="Block Info"> <button onclick="newBlock()">Create Block</button><br>
+                    <label id="BlockchainResponse"></label><br><br>
+                </td>
+            </tr>
+        </table>
+        
+        <br>
+        <br>
 
         Encrypt:<br>
         <input id="messageToEncrypt"> <button onclick="crypt('Encrypt')">Encrypt</button><br>
@@ -32,6 +50,11 @@
 
 
         <script>
+            const newBlock = async() => {
+                value = document.getElementById(`BlockchainInfo`).value
+                document.getElementById("BlockchainResponse").innerHTML = "Creating Block..."
+                document.getElementById("BlockchainResponse").innerHTML = await sendCommand(`NewBlock/${value}`)
+            }
 
             const newUser = async() => {
                 userName = document.getElementById(`newUserName`).value

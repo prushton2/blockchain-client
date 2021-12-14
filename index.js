@@ -11,7 +11,7 @@ const app         = express();
 
 const outPort     = 8080; 
 const inPort      = 5000;
-const baseURL     = "https://blockchain.prushton.repl.co"
+const baseURL     = "https://blockchain.prushton.com"
 
 
 let activeUser;
@@ -51,6 +51,13 @@ app.get("/NewUser/*", async(req, res) => {
     res.end(response)
 })
 
+app.get("/NewBlock/*", async(req, res) => {
+    info = req.url.split("/")[2]
+    console.log("Creating new block: ",info)
+
+    res.end("Created Block")
+})
+
 app.get("/Encrypt/*", async(req, res) => {
     message = req.url.split("/")[2]
 
@@ -72,8 +79,6 @@ app.get("/Decrypt/*", async(req, res) => {
     } catch (e) {
         res.end("An Unexpected Error Occurred")
     }
-    
-    
 })
 
 app.get("/setActiveUser/*", (req, res) => {
