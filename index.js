@@ -69,14 +69,12 @@ app.get("/NewBlock/*", async(req, res) => {
     response = JSON.parse(response)
     otp = response[0]
     encryptedHash = response[1]
-    console.log(otp)
-    console.log(encryptedHash)
+
 
     privateKey = await km.getPrivateKey(activeUser)
     decryptedHash = encryption.decrypt(privateKey, encryptedHash)
 
     result = await requests.get(`${baseURL}/otp/${otp}/${decryptedHash}`)
-    console.log(result)
     res.end("Created Block")
 })
 
@@ -94,7 +92,6 @@ app.get("/Decrypt/*", async(req, res) => {
     
     f = await km.getPrivateKey(activeUser)
     try {
-
         decrypted = encryption.decrypt(f, message)
         decrypted = encryption.convertUrlEscapeCharacters(decrypted)
         res.end(decrypted)
