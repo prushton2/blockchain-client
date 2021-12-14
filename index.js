@@ -37,17 +37,19 @@ app.get("/NewUser/*", async(req, res) => {
 
 
     keyPair = encryption.createKeys()
-
+    
     console.log("Created key pair")
+
+    publicKey = keyPair["public"]
+    publicKey = publicKey.replace(/\r?\n|\r/g, "\\n")
 
     userName = req.url.split("/")[2]
     
-    response = await requests.get(`${baseURL}/newUser/${userName}/${keyPair["public"]}`)
+    response = await requests.get(`${baseURL}/newUser/${userName}/${publicKey}`)
     
     if(response == "Created User") {
         km.saveKeys(userName, keyPair["public"], keyPair["private"])
     }
-    
     res.end(response)
 })
 
@@ -55,6 +57,8 @@ app.get("/NewBlock/*", async(req, res) => {
     info = req.url.split("/")[2]
     console.log("Creating new block: ",info)
 
+    response = await requests.get(`${baseURL}/newBlock/${activeUser}/${info}`)
+    console.log(response)
     res.end("Created Block")
 })
 
@@ -69,6 +73,7 @@ app.get("/Encrypt/*", async(req, res) => {
 
 app.get("/Decrypt/*", async(req, res) => {
     message = req.url.split("/").slice(2).join("/")
+    message = encryption.convertUrlEscapeCharacters(message)
     
     f = await km.getPrivateKey(activeUser)
     try {
