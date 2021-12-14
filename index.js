@@ -41,14 +41,22 @@ app.get("/NewUser/*", async(req, res) => {
     console.log("Created key pair")
 
     publicKey = keyPair["public"]
-    publicKey = publicKey.replace(/\r?\n|\r/g, "\\n")
+    publicKey = publicKey.replace(/\r?\n|\r/g, "-----NEWLINE-----")
+
+    console.log("Converted key pair to a URL acceptable string")
 
     userName = req.url.split("/")[2]
+
+    console.log(`Set desired username to ${userName}`)
+    console.log("Sending request to create user")
     
     response = await requests.get(`${baseURL}/newUser/${userName}/${publicKey}`)
     
+    console.log(`Got a response of ${response}`)
+
     if(response == "Created User") {
         km.saveKeys(userName, keyPair["public"], keyPair["private"])
+        console.log("Saved key pair")
     }
     res.end(response)
 })
@@ -58,7 +66,17 @@ app.get("/NewBlock/*", async(req, res) => {
     console.log("Creating new block: ",info)
 
     response = await requests.get(`${baseURL}/newBlock/${activeUser}/${info}`)
-    console.log(response)
+    response = JSON.parse(response)
+    otp = response[0]
+    encryptedHash = response[1]
+    console.log(otp)
+    console.log(encryptedHash)
+
+    privateKey = await km.getPrivateKey(activeUser)
+    decryptedHash = encryption.decrypt(privateKey, encryptedHash)
+
+    result = await requests.get(`${baseURL}/otp/${otp}/${decryptedHash}`)
+    console.log(result)
     res.end("Created Block")
 })
 
@@ -66,7 +84,6 @@ app.get("/Encrypt/*", async(req, res) => {
     message = req.url.split("/")[2]
 
     f = await km.getPublicKey(activeUser)
-    console.log(f)
     encrypted = encryption.encrypt(f, message)
     res.end(encrypted)
 })
