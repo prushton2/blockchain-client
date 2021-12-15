@@ -78,6 +78,11 @@ app.get("/NewBlock/*", async(req, res) => {
     res.end("Created Block")
 })
 
+app.get("/ls/*", async(req, res) => {
+    message = req.url.split("/")[2]
+    res.end(await requests.get(`${baseURL}/ls/${message}`))
+})
+
 app.get("/Encrypt/*", async(req, res) => {
     message = req.url.split("/")[2]
 

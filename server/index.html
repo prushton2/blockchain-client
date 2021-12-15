@@ -29,7 +29,8 @@
                     <input id="BlockchainInfo" placeholder="Block Info"> <button onclick="newBlock()">Create Block</button><br>
                     <label id="BlockchainResponse"></label><br><br>
                 </td>
-            </tr>
+                <td></td>
+        </tr>
         </table>
         
         <br>
@@ -45,11 +46,21 @@
 
         <label id="DecryptResponse"></label><br><br>
 
+        List:<br>
+        <input id="lsInput" placeholder="Search"></input> <button onclick="search()">Search</button><br>
+
+        <label id="lsOutput"></label>
 
 
 
 
         <script>
+            const search = async() => {
+                value = document.getElementById("lsInput").value
+                document.getElementById("lsOutput").innerHTML = "Searching..."
+                document.getElementById("lsOutput").innerHTML = await sendCommand(`ls/${value}`)
+            }
+
             const newBlock = async() => {
                 value = document.getElementById(`BlockchainInfo`).value
                 document.getElementById("BlockchainResponse").innerHTML = "Creating Block..."
