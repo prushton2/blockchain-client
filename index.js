@@ -1,17 +1,18 @@
-const encryption  = require("./encryption");
-const http        = require("http");
-const fs          = require("fs");
-const requests    = require("./requests");
-const km          = require("./keyManager");
+const encryption     = require("./encryption");
+const http           = require("http");
+const fs             = require("fs");
+const requests       = require("./requests");
+const km             = require("./keyManager");
+ 
+const cors           = require("cors")
+const express        = require("express");
+const res            = require("express/lib/response");
+const { response }   = require("express");
+const app            = express();
 
-const cors        = require("cors")
-const express     = require("express");
-const res         = require("express/lib/response");
-const app         = express();
-
-const outPort     = 8080; 
-const inPort      = 5000;
-const baseURL     = "https://blockchain.prushton.com"
+const outPort        = 8080; 
+const inPort         = 5000;
+const baseURL        = "https://blockchain.prushton.com"
 
 
 let activeUser;
@@ -50,25 +51,25 @@ app.get("/NewUser/*", async(req, res) => {
     console.log(`Set desired username to ${userName}`)
     console.log("Sending request to create user")
     
-    response = await requests.get(`${baseURL}/newUser/${userName}/${publicKey}`)
+    getResponse = await requests.get(`${baseURL}/newUser/${userName}/${publicKey}`)
     
-    console.log(`Got a response of ${response}`)
+    console.log(`Got a response of ${getResponse}`)
 
-    if(response == "Created User") {
+    if(getResponse == "Created User") {
         km.saveKeys(userName, keyPair["public"], keyPair["private"])
         console.log("Saved key pair")
     }
-    res.end(response)
+    res.end(getResponse)
 })
 
 app.get("/NewBlock/*", async(req, res) => {
     info = req.url.split("/")[2]
     console.log("Creating new block: ",info)
 
-    response = await requests.get(`${baseURL}/newBlock/${activeUser}/${info}`)
-    response = JSON.parse(response)
-    otp = response[0]
-    encryptedHash = response[1]
+    getResponse = await requests.get(`${baseURL}/newBlock/${activeUser}/${info}`)
+    getResponse = JSON.parse(getResponse)
+    otp = getResponse[0]
+    encryptedHash = getResponse[1]
 
 
     privateKey = await km.getPrivateKey(activeUser)
@@ -76,6 +77,24 @@ app.get("/NewBlock/*", async(req, res) => {
 
     result = await requests.get(`${baseURL}/otp/${otp}/${decryptedHash}`)
     res.end("Created Block")
+})
+
+app.get("/del/*", async(req, res) => {
+    message = req.url.split("/")[2]
+
+    getResponse = await requests.get(`${baseURL}/del/${message}`)
+    getResponse = JSON.parse(getResponse)
+    otp = getResponse[0]
+    encryptedHash = getResponse[1]
+
+    privateKey = await km.getPrivateKey(activeUser)
+    decryptedHash = encryption.decrypt(privateKey, encryptedHash)
+
+    result = await requests.get(`${baseURL}/otp/${otp}/${decryptedHash}`)
+    console.log(result)
+
+    res.end(result)
+
 })
 
 app.get("/ls/*", async(req, res) => {

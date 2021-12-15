@@ -29,7 +29,9 @@
                     <input id="BlockchainInfo" placeholder="Block Info"> <button onclick="newBlock()">Create Block</button><br>
                     <label id="BlockchainResponse"></label><br><br>
                 </td>
-                <td></td>
+                <td id="deleteArea">
+                    
+                </td>
         </tr>
         </table>
         
@@ -55,6 +57,13 @@
 
 
         <script>
+
+            const del = async() => { //Make this 1 function
+                value = document.getElementById("deleteInput").value
+                document.getElementById("deleteResponse").innerHTML = "Verifying..."
+                document.getElementById("deleteResponse").innerHTML = await sendCommand(`del/${value}`)
+            }
+
             const search = async() => {
                 value = document.getElementById("lsInput").value
                 document.getElementById("lsOutput").innerHTML = "Searching..."
@@ -82,7 +91,12 @@
             const setActiveUser = async() => {
                 name = document.getElementById("activeUser").value
                 response = await sendCommand(`setActiveUser/${name}`)
-                document.getElementById("ActiveUserResponse").innerHTML = response 
+                document.getElementById("ActiveUserResponse").innerHTML = response
+                if(response == "Opened key pair: admin") {
+                    document.getElementById("deleteArea").innerHTML = "Delete Object:<br><input id='deleteInput'> <button onclick='del()'>Delete</button><br><label id='deleteResponse'></label><br><br>"
+                } else {
+                    document.getElementById("deleteArea").innerHTML = ""
+                }
             }
 
             const sendCommand = async(text) => {
