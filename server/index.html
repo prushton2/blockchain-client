@@ -12,44 +12,31 @@
                 <td>
 
                     Active User Name: <br>
-                    <input id="activeUser"> <button onClick="setActiveUser()">Set</button><br>
+                    <input id="activeUserInput"> <button onClick="setActiveUser()">Set</button><br>
                     
-                    <label id="ActiveUserResponse"></label><br><br>
+                    <label id="activeUserOutput"></label><br><br>
                 </td>
                 <td>
                     Create User:<br>
-                    <input id="newUserName"> <button onclick="newUser()">Create User</button><br>
+                    <input id="newUserInput"> <button onclick="makeRequest('newUserInput', 'newUserOutput', 'Creating User...', 'NewUser')">Create User</button><br>
             
-                    <label id="NewUserResponse"></label><br><br>
+                    <label id="newUserOutput"></label><br><br>
                 </td>    
             </tr>
             <tr>
                 <td>
                     Create a new Block:<br>
-                    <input id="BlockchainInfo" placeholder="Block Info"> <button onclick="newBlock()">Create Block</button><br>
-                    <label id="BlockchainResponse"></label><br><br>
+                    <input id="newBlockInput" placeholder="Block Info"> <button onclick="makeRequest('newBlockInput', 'newBlockOutput', 'Creating Block...', 'NewBlock')">Create Block</button><br>
+                    <label id="newBlockOutput"></label><br><br>
                 </td>
                 <td id="deleteArea">
                     
                 </td>
         </tr>
         </table>
-        
-        <br>
-        <br>
-
-        Encrypt:<br>
-        <input id="messageToEncrypt"> <button onclick="crypt('Encrypt')">Encrypt</button><br>
-
-        <label id="EncryptResponse"></label><br><br>
-
-        Decrypt:<br>
-        <input id="messageToDecrypt"> <button onclick="crypt('Decrypt')">Decrypt</button><br>
-
-        <label id="DecryptResponse"></label><br><br>
 
         List:<br>
-        <input id="lsInput" placeholder="Search"></input> <button onclick="search()">Search</button><br>
+        <input id="lsInput" placeholder="Search"></input> <button onclick="makeRequest('lsInput', 'lsOutput', 'Searching...', 'ls')">Search</button><br>
 
         <label id="lsOutput"></label>
 
@@ -58,42 +45,18 @@
 
         <script>
 
-            const del = async() => { //Make this 1 function
-                value = document.getElementById("deleteInput").value
-                document.getElementById("deleteResponse").innerHTML = "Verifying..."
-                document.getElementById("deleteResponse").innerHTML = await sendCommand(`del/${value}`)
-            }
-
-            const search = async() => {
-                value = document.getElementById("lsInput").value
-                document.getElementById("lsOutput").innerHTML = "Searching..."
-                document.getElementById("lsOutput").innerHTML = await sendCommand(`ls/${value}`)
-            }
-
-            const newBlock = async() => {
-                value = document.getElementById(`BlockchainInfo`).value
-                document.getElementById("BlockchainResponse").innerHTML = "Creating Block..."
-                document.getElementById("BlockchainResponse").innerHTML = await sendCommand(`NewBlock/${value}`)
-            }
-
-            const newUser = async() => {
-                userName = document.getElementById(`newUserName`).value
-                document.getElementById("NewUserResponse").innerHTML = "Creating User..."
-                document.getElementById("NewUserResponse").innerHTML = await sendCommand(`NewUser/${userName}`)
-            }
-
-            const crypt = async(d_or_e) => {
-                message = document.getElementById(`messageTo${d_or_e}`).value
-                response = await sendCommand(`${d_or_e}/${message}`)
-                document.getElementById(`${d_or_e}Response`).innerHTML = response
+            const makeRequest = async(input, output, placeholder, url) => {
+                value = document.getElementById(input).value
+                document.getElementById(output).innerHTML = placeholder
+                document.getElementById(output).innerHTML = await sendCommand(`${url}/${value}`)
             }
 
             const setActiveUser = async() => {
-                name = document.getElementById("activeUser").value
+                name = document.getElementById("activeUserInput").value
                 response = await sendCommand(`setActiveUser/${name}`)
-                document.getElementById("ActiveUserResponse").innerHTML = response
+                document.getElementById("activeUserOutput").innerHTML = response
                 if(response == "Opened key pair: admin") {
-                    document.getElementById("deleteArea").innerHTML = "Delete Object:<br><input id='deleteInput'> <button onclick='del()'>Delete</button><br><label id='deleteResponse'></label><br><br>"
+                    document.getElementById("deleteArea").innerHTML = `Delete Object:<br><input id='deleteInput'> <button onclick="makeRequest('deleteInput', 'deleteOutput', 'Deleting...', 'del')">Delete</button><br><label id='deleteOutput'></label><br><br>`
                 } else {
                     document.getElementById("deleteArea").innerHTML = ""
                 }
