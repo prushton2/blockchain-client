@@ -6,11 +6,9 @@
     <body>
         <h1>Blockchain</h1>
 
-
         <table>
             <tr>
                 <td>
-
                     Active User Name: <br>
                     <input id="activeUserInput"> <button onClick="setActiveUser()">Set</button><br>
                     
@@ -32,7 +30,7 @@
                 <td id="deleteArea">
                     
                 </td>
-        </tr>
+            </tr>
         </table>
 
         List:<br>
@@ -40,11 +38,7 @@
 
         <label id="lsOutput"></label>
 
-
-
-
         <script>
-
             const makeRequest = async(input, output, placeholder, url) => {
                 value = document.getElementById(input).value
                 document.getElementById(output).innerHTML = placeholder
@@ -75,15 +69,15 @@
                 size: 200%;
             }
             input {
-                color: #D4D4D4;
+                color: inherit;
                 background-color: #2f2f2f;
             }
             button {
-                color: #D4D4D4;
-                background-color: #2f2f2f;
+                color: inherit;
+                background-color: inherit;
             }
             label {
-                color: #D4D4D4;
+                color: inherit;
             }
                 
         </style>
